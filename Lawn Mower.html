@@ -1,0 +1,77 @@
+<canvas width="400" height="400" style="border: 1px solid black"></canvas>
+<script>
+  const gameMap = [
+    "####################",
+    "#                  #",
+    "#                  #",
+    "#  ##############  #",
+    "# ### ### ### #### #",
+    "#                  #",
+    "# ######## ####### #",
+    "#                  #",
+    "# ################ #",
+    "#                  #",
+    "# ### ### ### #### #",
+    "#                  #",
+    "# ################ #",
+    "#                  #",
+    "# ### ### ### #### #",
+    "#                  #",
+    "# ################ #",
+    "#                  #",
+    "#                  #",
+    "####################",
+  ];
+  const canvas = document.querySelector("canvas");
+  const ctx = canvas.getContext("2d");
+
+  ctx.fillStyle = "green";
+
+  for (let i = 0; i < gameMap.length; i++) {
+    for (let j = 0; j < gameMap[i].length; j++) {
+      if (gameMap[i][j] === "#") {
+        ctx.fillRect(j * 20, i * 20, 20, 20);
+      }
+    }
+  }
+
+  ctx.fillStyle = "blue";
+  ctx.fillRect(20, 20, 20, 20)
+  let playerX = 20
+  let playerY = 20
+  let direction = {x: 1, y: 0}
+  addEventListener('keydown', event => {
+    if (event.key === "ArrowLeft") {
+      direction = {x: -1, y: 0}
+    }
+    if (event.key === "ArrowRight") {
+      direction = {x: 1, y: 0}
+    }
+    if (event.key === "ArrowUp") {
+      direction = {x: 0, y: -1}
+    }
+    if (event.key === "ArrowDown") {
+      direction = {x: 0, y: 1}
+    }
+  })
+
+  const drawPlayer = () => {
+    setTimeout(() => {
+      if (playerX === 360 && direction.x === 1) return drawPlayer()
+      if (playerX === 20 && direction.x === -1) return drawPlayer()
+      if (playerY === 360 && direction.y === 1) return drawPlayer()
+      if (playerY === 20 && direction.y === -1) return drawPlayer()
+
+      ctx.fillStyle = "white"
+      ctx.fillRect(playerX, playerY, 20, 20)
+
+      ctx.fillStyle = "blue"
+      playerX += direction.x * 2
+      playerY += direction.y * 2
+      ctx.fillRect(playerX, playerY, 20, 20)
+      return drawPlayer()
+    }, 10)
+  }
+  drawPlayer()
+
+</script>
